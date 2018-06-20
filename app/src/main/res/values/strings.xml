@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Table Reservation</string>
+    <string name="customers_label">Customers</string>
+    <string name="customers_instruction">To reserve: drag over to table and drop</string>
+    <string name="tables_label">Tables</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
