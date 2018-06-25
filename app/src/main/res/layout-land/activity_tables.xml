@@ -26,6 +26,7 @@
                 android:padding="5dp"
                 android:paddingTop="20dp"
                 android:text="@string/customers_label"
+                android:textStyle="bold"
                 android:textColor="@color/quandoo_purple"
                 android:textSize="25sp" />
 
@@ -51,6 +52,7 @@
                 android:padding="5dp"
                 android:paddingTop="10dp"
                 android:text="@string/tables_label"
+                android:textStyle="bold"
                 android:textColor="@color/quandoo_purple"
                 android:textSize="25sp" />
 

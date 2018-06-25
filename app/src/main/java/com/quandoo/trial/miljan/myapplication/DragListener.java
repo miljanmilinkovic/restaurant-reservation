@@ -7,9 +7,9 @@ import android.view.animation.ScaleAnimation;
 
 public class DragListener implements View.OnDragListener {
 
-    private ReserveListener mListener;
+    private DropListener mListener;
 
-    public DragListener(ReserveListener listener) {
+    public DragListener(DropListener listener) {
         mListener = listener;
     }
 
@@ -26,8 +26,9 @@ public class DragListener implements View.OnDragListener {
                 break;
 
             case DragEvent.ACTION_DROP:
-                int position = (int) v.getTag();
-                mListener.reserve(position);
+                int table = (int) v.getTag();
+                int customer = (int) event.getLocalState();
+                mListener.dropClientAtTable(table, customer);
                 break;
         }
 

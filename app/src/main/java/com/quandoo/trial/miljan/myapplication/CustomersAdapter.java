@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.quandoo.trial.miljan.myapplication.model.CustomerModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,8 +23,8 @@ class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.ListViewHol
 
     private List<CustomerModel> mCustomerList;
 
-    CustomersAdapter(List<CustomerModel> customerList) {
-        mCustomerList = customerList;
+    CustomersAdapter() {
+        mCustomerList = new ArrayList<CustomerModel>();
     }
 
     @Override
@@ -36,6 +37,7 @@ class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.ListViewHol
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
         holder.text.setText(mCustomerList.get(position).getLabel());
+        holder.frameLayout.setTag(position);
         holder.frameLayout.setOnTouchListener(this);
     }
 

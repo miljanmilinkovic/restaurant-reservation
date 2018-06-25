@@ -1,6 +1,7 @@
 package com.quandoo.trial.miljan.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +15,10 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.quandoo.trial.miljan.myapplication.model.CustomerModel;
+import com.quandoo.trial.miljan.myapplication.model.ReservationModelImpl;
+import com.quandoo.trial.miljan.myapplication.presenter.ReservationPresenter;
+import com.quandoo.trial.miljan.myapplication.presenter.ReservationPresenterImpl;
+import com.quandoo.trial.miljan.myapplication.view.ReservationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +26,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TablesActivity extends AppCompatActivity {
+public class TablesActivity extends AppCompatActivity
+        implements ReservationView {
     /**
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private boolean mDragHandled = false;
+    private CustomersAdapter mCustomerAdapter;
+    private TablesAdapter mTableAdapter;
+
+    private ReservationPresenter mPresenter;
 
     @BindView(R.id.fullscreen_content)
     View mContentView;
@@ -81,6 +90,8 @@ public class TablesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tables);
         ButterKnife.bind(this);
 
+        mPresenter = ReservationPresenterImpl.getPresenter(this, new ReservationModelImpl());
+
         mVisible = true;
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -94,12 +105,20 @@ public class TablesActivity extends AppCompatActivity {
         initCustomersRecyclerView();
         initTablesRecyclerView();
         initReservationInstruction();
+        mPresenter.init();
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         delayedHide(100);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenter = null;
     }
 
     private void toggle() {
@@ -145,30 +164,21 @@ public class TablesActivity extends AppCompatActivity {
     }
 
     private void initCustomersRecyclerView() {
-        mRvCustomers.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mRvCustomers.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+        } else {
+            mRvCustomers.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        }
 
-        List<CustomerModel> customerList = new ArrayList<>();
-        customerList.add(new CustomerModel(0, "Marilyn", "Monroe"));
-        customerList.add(new CustomerModel(1, "Abraham", "Lincoln"));
-        customerList.add(new CustomerModel(2, "Mother", "Teresa"));
-        customerList.add(new CustomerModel(3, "John F.", "Kennedy"));
-        customerList.add(new CustomerModel(4, "Martin Luther", "King"));
-
-        CustomersAdapter customerAdapter = new CustomersAdapter(customerList);
-        mRvCustomers.setAdapter(customerAdapter);
+        mCustomerAdapter = new CustomersAdapter();
+        mRvCustomers.setAdapter(mCustomerAdapter);
     }
 
     private void initTablesRecyclerView() {
-        mRvTables.setLayoutManager(new GridLayoutManager(this, 4));
+        mRvTables.setLayoutManager(new GridLayoutManager(this, 7));
 
-        boolean[] array = new boolean[20];
-        array[0] = true;
-        array[1] = false;
-        array[3] = true;
-        array[7] = true;
-
-        TablesAdapter bottomListAdapter = new TablesAdapter(array);
-        mRvTables.setAdapter(bottomListAdapter);
+        mTableAdapter = new TablesAdapter(mPresenter);
+        mRvTables.setAdapter(mTableAdapter);
     }
 
     private void initReservationInstruction() {
@@ -182,6 +192,26 @@ public class TablesActivity extends AppCompatActivity {
             public boolean onDrag(View v, DragEvent event) {
                 mReservationInstruction.setAlpha(0f);
                 return false;
+            }
+        });
+    }
+
+    public void updateCustomer(final List<CustomerModel> customerList) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mCustomerAdapter.updateList(customerList);
+                mCustomerAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void updateTable(final boolean[] tablesArray) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTableAdapter.updateArray(tablesArray);
+                mTableAdapter.notifyDataSetChanged();
             }
         });
     }

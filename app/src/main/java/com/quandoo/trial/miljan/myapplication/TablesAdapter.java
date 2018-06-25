@@ -7,16 +7,20 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.quandoo.trial.miljan.myapplication.presenter.ReservationPresenter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 class TablesAdapter extends RecyclerView.Adapter<TablesAdapter.ListViewHolder>
-        implements ReserveListener {
+        implements DropListener {
 
     private boolean[] mTableArray;
+    private ReservationPresenter mPresenter;
 
-    TablesAdapter(boolean[] tableArray) {
-        mTableArray = tableArray;
+    TablesAdapter(ReservationPresenter presenter) {
+        mPresenter = presenter;
+        mTableArray = new boolean[0];
     }
 
     @Override
@@ -30,7 +34,9 @@ class TablesAdapter extends RecyclerView.Adapter<TablesAdapter.ListViewHolder>
     public void onBindViewHolder(ListViewHolder holder, int position) {
         holder.text.setText(mTableArray[position] ? "R" : "");
         holder.frameLayout.setBackgroundResource(mTableArray[position] ? R.drawable.purple_circle : R.drawable.white_circle);
-        if (! mTableArray[position]){
+        if (mTableArray[position]) {
+            holder.frameLayout.setOnDragListener(null);
+        } else {
             holder.frameLayout.setTag(position);
             holder.frameLayout.setOnDragListener(new DragListener(this));
         }
@@ -65,8 +71,7 @@ class TablesAdapter extends RecyclerView.Adapter<TablesAdapter.ListViewHolder>
         }
     }
 
-    public void reserve(int position) {
-        mTableArray[position] = true;
-        notifyDataSetChanged();
+    public void dropClientAtTable(int table, int customer) {
+        mPresenter.reserveTable(table, customer);
     }
 }
