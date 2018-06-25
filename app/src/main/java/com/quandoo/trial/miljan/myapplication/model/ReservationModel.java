@@ -12,10 +12,10 @@ public interface ReservationModel {
      * Update model to reflect new table reservation
      *
      * @param table table to reserve
-     * @param customer reservation for customer
+     * @param customerId reservation for customer
      * @return true if reservation successful
      */
-    boolean reserveTable(int table, int customer);
+    boolean reserveTable(int table, int customerId);
 
     /**
      * Retrieve Customer data
@@ -30,4 +30,11 @@ public interface ReservationModel {
      * @return array of table reservations
      */
     boolean[] getTables();
+
+    /**
+     * Search for customer
+     *
+     * @param text text to search for
+     */
+    void filterCustomers(String text);
 }

@@ -15,4 +15,11 @@ public interface ReservationPresenter {
      * @param customer number of customer received from UI
      */
     void reserveTable(int table, int customer);
+
+    /**
+     * Search for customer
+     *
+     * @param text text to search for
+     */
+    void filterCustomers(String text);
 }

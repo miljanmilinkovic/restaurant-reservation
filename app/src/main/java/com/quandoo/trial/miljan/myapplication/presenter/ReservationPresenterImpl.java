@@ -1,5 +1,7 @@
 package com.quandoo.trial.miljan.myapplication.presenter;
 
+import android.text.Editable;
+
 import com.quandoo.trial.miljan.myapplication.model.CustomerModel;
 import com.quandoo.trial.miljan.myapplication.model.ModelCallbacks;
 import com.quandoo.trial.miljan.myapplication.model.ReservationModel;
@@ -46,6 +48,10 @@ public class ReservationPresenterImpl implements ReservationPresenter, ModelCall
 
     public void reserveTable(int table, int customer) {
         mModel.reserveTable(table, customer);
+    }
+
+    public void filterCustomers(String text) {
+        mModel.filterCustomers(text);
     }
 
     public void onShowCustomers(List<CustomerModel> customerList) {

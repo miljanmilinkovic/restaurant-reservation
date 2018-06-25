@@ -37,7 +37,7 @@ class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.ListViewHol
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
         holder.text.setText(mCustomerList.get(position).getLabel());
-        holder.frameLayout.setTag(position);
+        holder.frameLayout.setTag(mCustomerList.get(position).getId());
         holder.frameLayout.setOnTouchListener(this);
     }
 

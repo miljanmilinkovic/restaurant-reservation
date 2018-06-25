@@ -9,10 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.EditText;
 
 import com.quandoo.trial.miljan.myapplication.model.CustomerModel;
 import com.quandoo.trial.miljan.myapplication.model.ReservationModelImpl;
@@ -20,7 +24,6 @@ import com.quandoo.trial.miljan.myapplication.presenter.ReservationPresenter;
 import com.quandoo.trial.miljan.myapplication.presenter.ReservationPresenterImpl;
 import com.quandoo.trial.miljan.myapplication.view.ReservationView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,6 +50,8 @@ public class TablesActivity extends AppCompatActivity
     RecyclerView mRvTables;
     @BindView(R.id.reservation_instruction)
     View mReservationInstruction;
+    @BindView(R.id.customer_txt)
+    EditText mSearchTxt;
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -105,6 +110,7 @@ public class TablesActivity extends AppCompatActivity
         initCustomersRecyclerView();
         initTablesRecyclerView();
         initReservationInstruction();
+        initSearch();
         mPresenter.init();
     }
 
@@ -196,6 +202,25 @@ public class TablesActivity extends AppCompatActivity
         });
     }
 
+    private void initSearch() {
+        mSearchTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!TextUtils.isEmpty(charSequence)) {
+                    mPresenter.filterCustomers(charSequence.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+    }
+
     public void updateCustomer(final List<CustomerModel> customerList) {
         runOnUiThread(new Runnable() {
             @Override
@@ -212,6 +237,7 @@ public class TablesActivity extends AppCompatActivity
             public void run() {
                 mTableAdapter.updateArray(tablesArray);
                 mTableAdapter.notifyDataSetChanged();
+                mSearchTxt.setText("");
             }
         });
     }

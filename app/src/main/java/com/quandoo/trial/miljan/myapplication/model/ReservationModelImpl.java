@@ -65,11 +65,11 @@ public class ReservationModelImpl implements ReservationModel {
         t.schedule(new RetrieveData(), 0, REFRESH_INTERVAL);
     }
 
-    public boolean reserveTable(int table, int customer) {
+    public boolean reserveTable(int table, int customerId) {
         mTablesArray[table] = true;
         mCallbacks.onShowReservedTable(mTablesArray);
 
-        mCustomersLst.remove(customer);
+        mCustomersLst.remove(new CustomerModel(customerId, "", ""));
         mCallbacks.onShowCustomers(mCustomersLst);
         return true;
     }
@@ -80,6 +80,16 @@ public class ReservationModelImpl implements ReservationModel {
 
     public boolean[] getTables() {
         return mTablesArray;
+    }
+
+    public void filterCustomers(String text) {
+        List<CustomerModel> filteredCustomersList = new ArrayList<>();
+        for (CustomerModel customer: mCustomersLst) {
+            if(customer.contains(text)) {
+                filteredCustomersList.add(customer);
+            }
+        }
+        mCallbacks.onShowCustomers(filteredCustomersList);
     }
 
     private String getJSON(String url) throws IOException {
