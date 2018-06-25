@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quandoo_yellow"
+    android:background="@drawable/quandoo_gradient"
     tools:context="com.quandoo.trial.miljan.myapplication.TablesActivity">
 
     <LinearLayout
@@ -29,15 +29,6 @@
                 android:textColor="@color/quandoo_purple"
                 android:textSize="25sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:padding="5dp"
-                android:text="@string/customers_instruction"
-                android:textColor="@color/quandoo_purple"
-                android:textSize="16sp" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvCustomers"
                 android:layout_width="match_parent"
@@ -63,12 +54,30 @@
                 android:textColor="@color/quandoo_purple"
                 android:textSize="25sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvTables"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp" />
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvTables"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp" />
+
+                <TextView
+                    android:id="@+id/reservation_instruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white_transparent"
+                    android:gravity="center"
+                    android:padding="30dp"
+                    android:lineSpacingExtra="20dp"
+                    android:text="@string/customers_instruction"
+                    android:textColor="@color/quandoo_purple"
+                    android:textSize="32sp" />
+
+            </RelativeLayout>
         </LinearLayout>
 
     </LinearLayout>

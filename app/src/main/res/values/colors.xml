@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="quandoo_yellow">#f8b333</color>
+    <color name="quandoo_light_yellow">#fad48c</color>
     <color name="quandoo_purple">#6f6fbc</color>
+    <color name="white_transparent">#CCFFFFFF</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

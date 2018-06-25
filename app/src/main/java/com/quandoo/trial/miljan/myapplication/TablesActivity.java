@@ -8,7 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.DragEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import com.quandoo.trial.miljan.myapplication.model.CustomerModel;
 
@@ -25,6 +28,7 @@ public class TablesActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
+    private boolean mDragHandled = false;
 
     @BindView(R.id.fullscreen_content)
     View mContentView;
@@ -32,6 +36,8 @@ public class TablesActivity extends AppCompatActivity {
     RecyclerView mRvCustomers;
     @BindView(R.id.rvTables)
     RecyclerView mRvTables;
+    @BindView(R.id.reservation_instruction)
+    View mReservationInstruction;
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -87,6 +93,7 @@ public class TablesActivity extends AppCompatActivity {
 
         initCustomersRecyclerView();
         initTablesRecyclerView();
+        initReservationInstruction();
     }
 
     @Override
@@ -162,5 +169,20 @@ public class TablesActivity extends AppCompatActivity {
 
         TablesAdapter bottomListAdapter = new TablesAdapter(array);
         mRvTables.setAdapter(bottomListAdapter);
+    }
+
+    private void initReservationInstruction() {
+        Animation alphaAnim = new AlphaAnimation(1.0f, 0.7f);
+        alphaAnim.setDuration(1000);
+        alphaAnim.setRepeatMode(Animation.REVERSE);
+        alphaAnim.setRepeatCount(Animation.INFINITE);
+        mReservationInstruction.startAnimation(alphaAnim);
+        mReservationInstruction.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                mReservationInstruction.setAlpha(0f);
+                return false;
+            }
+        });
     }
 }
